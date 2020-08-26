@@ -8,9 +8,12 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import { Form, HasError, AlertError } from 'vform'
+import { Form, HasError, AlertError } from 'vform';
 
-import Swal from 'sweetalert2'
+import gate from './gate';
+Vue.prototype.$gate = new gate(window.user);
+
+import Swal from 'sweetalert2';
 window.Swal = Swal;
 
 // sweet alert
@@ -33,6 +36,8 @@ window.Toast = Toast;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
@@ -45,8 +50,10 @@ Vue.use(VueProgressBar, {
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/developer', component: require('./components/Developer.vue').default },
     { path: '/user', component: require('./components/Users.vue').default },
-    { path: '/profile', component: require('./components/Profile.vue').default }
+    { path: '/profile', component: require('./components/Profile.vue').default },
+    { path: '*', component: require('./components/NotFound.vue').default }
 ]
 
 const router = new VueRouter({
@@ -55,6 +62,26 @@ const router = new VueRouter({
 })
 // created for componet communications such as even trigger
 window.Fire = new Vue();
+
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
+
+Vue.component(
+    'not-found',
+    require('./components/NotFound.vue').default
+);
 
 /**
  * The following block of code may be used to automatically register your

@@ -49,7 +49,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                <img src="/images/user.png" class="img-circle elevation-2" alt="User Image">
+                <img src="/images/profile/{{Auth::user()->photo}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                 <a href="#" class="d-block">{{Auth::user()->name}}</a>
@@ -65,12 +65,21 @@
                             <p>Dashboard</p>
                         </router-link>
                     </li>
+                    @can('isAdmin')
+                    <li class="nav-item">
+                        <router-link to="/developer" class="nav-link">
+                            <i class="nav-icon fas fa-cogs yellow"></i>
+                            <p>Developer</p>
+                        </router-link>
+                    </li>
+                    @endcan
                     <li class="nav-item">
                         <router-link to="/profile" class="nav-link">
                             <i class="nav-icon fas fa-user orange"></i>
                             <p>Profile</p>
                         </router-link>
                     </li>
+                    @can('isAdmin')
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-cog green"></i>
@@ -94,6 +103,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endcan
                     <li class="nav-item">
                         <a href="{{route('logout')}}" class="nav-link" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
@@ -132,6 +142,11 @@
             </div>
         </footer>
     </div>
+    @auth
+        <script>
+            window.user = @json(auth()->user())
+        </script>
+    @endauth
     <script type="text/javascript" src="/js/app.js"></script>
 </body>
 </html>
